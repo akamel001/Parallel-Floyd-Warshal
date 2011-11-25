@@ -1,0 +1,10 @@
+The repository contains a make file that compiles all the src code with the needed libraries. 
+
+To compile use:
+	1) Download the repository
+	2) Go to the directory and type "make"
+
+Dependancies:
+	MPI to be installed for MPICC & MPIRUN
+	OMP to be installed for #pragma
+
