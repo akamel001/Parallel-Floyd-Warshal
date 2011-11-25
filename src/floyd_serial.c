@@ -29,7 +29,7 @@ int* gen_graph(int n, double p)
     return l;
 }
 
-void floyds(int *l, int n){
+void floyd(int *l, int n){
 
 	int k,i,j;
 	int ij,ik,kj;
@@ -125,7 +125,7 @@ int main (int argc, char** argv)
 
 	 clock_t start = clock();
 	 //infinitize(n,l);
-	 floyds(l,n); 
+	 floyd(l,n); 
 	 deinfinitize(n,l);
 	 clock_t end = clock();
 	

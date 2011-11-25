@@ -6,6 +6,9 @@
 #include "mpi.h"
 #include "mt19937p.h"
 
+/*
+ * Description: Algorithm uses repeated squaring process to solve the matrix
+ */
 int square(int n,          // Number of nodes
 		int* restrict l,     // Partial distance at step s
 		int* restrict lnew,  // Partial distance at step s+1

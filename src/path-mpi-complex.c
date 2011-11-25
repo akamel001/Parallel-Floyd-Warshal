@@ -46,6 +46,9 @@ void exchange(int rank, int size, int count, int* pass_buff, int* tmp_buff)
 	memcpy(pass_buff, tmp_buff, count*sizeof(int));
 }
 
+/*
+ * Description: Algorithm uses repeated squaring process to solve the matrix
+ */
 int square(int n,               // Number of nodes
 		int nloc,
 		int* restrict lloc,     // Partial distance at step s
