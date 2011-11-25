@@ -132,7 +132,7 @@ int main (int argc, char** argv)
     printf("== Serial FloydWarshall\n");
     printf("n:     %d\n", n);
     printf("p:     %g\n", p);
-    printf("Time:  %g\n", (double) (end-start));
+    printf("Time:  %g us\n", (double) (end-start)/1000);
     printf("Check: %X\n", fletcher16(l, n*n));
 	
 	//output
