@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+#$ -cwd
+#$ -j y
+#$ -S /bin/bash
+#$ -pe orte 2
+#
+NSLOTS=$1
+
+/opt/openmpi/bin/mpirun -np $NSLOTS ./path-mpi-complex.x -n $2 >> timing_mpi_complex_$2

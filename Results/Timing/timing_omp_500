@@ -1,0 +1,47 @@
+== OpenMP with 9 threads
+n:     500
+p:     0.05
+Time:  0.623946
+Check: 33CD
+= OpenMP with 2 threads
+n:     500
+p:     0.05
+Time:  0.592814
+Check: 33CD
+== OpenMP with 4 threads
+n:     500
+p:     0.05
+Time:  0.843794
+Check: 33CD
+
+== OpenMP with 5 threads
+n:     500
+p:     0.05
+Time:  1.42128
+Check: 33CD
+D
+== OpenMP with 6 threads
+n:     500
+p:     0.05
+Time:  1.04784
+Check: 33CD
+== OpenMP with 1 threads
+n:     500
+p:     0.05
+Time:  1.34656
+Check: 33CD
+== OpenMP with 12 threads
+n:     500
+p:     0.05
+Time:  0.745222
+Check: 33CD
+== OpenMP with 8 threads
+n:     500
+p:     0.05
+Time:  0.832722
+Check: 33CD
+== OpenMP with 7 threads
+n:     500
+p:     0.05
+Time:  1.59148
+Check: 33CD

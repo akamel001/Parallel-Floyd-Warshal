@@ -1,0 +1,50 @@
+== MPI Complex with 5 processes
+n:     750
+p:     0.05
+Time:  0.437711
+Check: CCC1
+= MPI Complex with 4 processes
+n:     750
+p:     0.05
+Time:  0.643826
+Check: CCC1
+== MPI Complex with 3 processes
+n:     750
+p:     0.05
+Time:  0.879633
+Check: CCC1
+== MPI Complex with 9 processes
+n:     750
+p:     0.05
+Time:  1.37911
+Check: CCC1
+== MPI Complex with 11 processes
+n:     750
+p:     0.05
+Time:  1.40292
+== MPI Complex with 12 processes
+n:     750
+p:     0.05
+Time:  1.3929
+Check: CCC1
+Check: CCC1
+== MPI Complex with 1 processes
+n:     750
+p:     0.05
+Time:  6.99531
+Check: CCC1
+== MPI Complex with 6 processes
+n:     750
+p:     0.05
+Time:  19.0171
+Check: CCC1
+== MPI Complex with 8 processes
+n:     750
+p:     0.05
+Time:  16.389
+Check: CCC1
+== MPI Complex with 7 processes
+n:     750
+p:     0.05
+Time:  20.4362
+Check: CCC1

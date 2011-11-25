@@ -1,0 +1,51 @@
+== MPI with 3 processes ==
+n:     750
+p:     0.05
+Time:  4.43282
+Check: CCC1
+== MPI with 4 processes ==
+n:     750
+p:     0.05
+Time:  4.82238
+Check: CCC1
+== MPI with 2 processes ==
+n:     750
+p:     0.05
+Time:  6.76518
+Check: CCC1
+
+== MPI with 11 processes ==
+n:     750
+p:     0.05
+Time:  4.39268
+Check: CCC1
+== MPI with 12 processes ==
+n:     750
+p:     0.05
+Time:  3.90936
+Check: CCC1
+== MPI with 1 processes ==
+n:     750
+p:     0.05
+Time:  6.77887
+Check: CCC1
+== MPI with 6 processes ==
+n:     750
+p:     0.05
+Time:  19.4384
+Check: CCC1
+== MPI with 8 processes ==
+n:     750
+p:     0.05
+Time:  19.97
+Check: CCC1
+== MPI with 7 processes ==
+n:     750
+p:     0.05
+Time:  18.097
+Check: CCC1
+== MPI with 5 processes ==
+n:     750
+p:     0.05
+Time:  16.5013
+Check: CCC1

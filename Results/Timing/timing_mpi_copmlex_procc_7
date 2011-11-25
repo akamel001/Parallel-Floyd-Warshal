@@ -1,0 +1,60 @@
+== MPI Complex with 7 processes
+n:     400
+p:     0.05
+Time:  0.0477469
+Check: 4312
+== MPI Complex with 7 processes
+n:     700
+p:     0.05
+Time:  0.253553
+Check: 3263
+== MPI Complex with 7 processes
+n:     1000
+p:     0.05
+Time:  40.6799
+Check: CC6A
+== MPI Complex with 7 processes
+n:     1300
+p:     0.05
+Time:  42.789
+Check: D9C9
+== MPI Complex with 7 processes
+n:     1600
+p:     0.05
+Time:  52.0097
+Check: 65E1
+== MPI Complex with 7 processes
+n:     1900
+p:     0.05
+Time:  126.714
+Check: 99BC
+== MPI Complex with 7 processes
+n:     2200
+p:     0.05
+Time:  167.663
+Check: 57F4
+== MPI Complex with 7 processes
+n:     2500
+p:     0.05
+Time:  220.532
+Check: C4C6
+== MPI Complex with 7 processes
+n:     2800
+p:     0.05
+Time:  227.521
+Check: 6AC6
+== MPI Complex with 7 processes
+n:     3100
+p:     0.05
+Time:  367.622
+Check: 4D05
+== MPI Complex with 7 processes
+n:     3400
+p:     0.05
+Time:  417.321
+Check: 63E
+== MPI Complex with 7 processes
+n:     3700
+p:     0.05
+Time:  474.136
+Check: A0AD

@@ -1,0 +1,60 @@
+== MPI with 7 processes ==
+n:     400
+p:     0.05
+Time:  21.1458
+Check: 4312
+== MPI with 7 processes ==
+n:     600
+p:     0.05
+Time:  26.701
+Check: 5FD6
+== MPI with 7 processes ==
+n:     800
+p:     0.05
+Time:  29.7008
+Check: C008
+== MPI with 7 processes ==
+n:     1000
+p:     0.05
+Time:  26.8549
+Check: CC6A
+== MPI with 7 processes ==
+n:     1200
+p:     0.05
+Time:  55.0222
+Check: 857C
+== MPI with 7 processes ==
+n:     1400
+p:     0.05
+Time:  117.198
+Check: CC53
+== MPI with 7 processes ==
+n:     1600
+p:     0.05
+Time:  134.89
+== MPI with 7 processes ==
+n:     1800
+p:     0.05
+Time:  137.006
+Check: 65E1
+Check: 7C67
+== MPI with 7 processes ==
+n:     2200
+p:     0.05
+Time:  314.387
+Check: 57F4
+== MPI with 7 processes ==
+n:     2000
+p:     0.05
+Time:  319.874
+Check: E16C
+== MPI with 7 processes ==
+n:     2400
+p:     0.05
+Time:  438.597
+== MPI with 7 processes ==
+n:     2600
+p:     0.05
+Time:  438.483
+Check: A00B
+Check: D9FE

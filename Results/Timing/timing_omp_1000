@@ -1,0 +1,56 @@
+== OpenMP with 4 threads
+n:     1000
+p:     0.05
+Time:  13.3658
+Check: CC6A
+== OpenMP with 3 threads
+n:     1000
+p:     0.05
+Time:  23.5502
+Check: CC6A
+== OpenMP with 12 threads
+n:     1000
+p:     0.05
+Time:  13.7833
+Check: CC6A
+== OpenMP with 10 threads
+n:     1000
+p:     0.05
+Time:  23.5109
+Check: CC6A
+== OpenMP with 9 threads
+n:     1000
+p:     0.05
+Time:  28.0307
+Check: CC6A
+== OpenMP with 2 threads
+n:     1000
+p:     0.05
+Time:  43.7269
+Check: CC6A
+
+== OpenMP with 8 threads
+n:     1000
+p:     0.05
+Time:  34.6414
+Check: CC6A
+== OpenMP with 7 threads
+n:     1000
+p:     0.05
+Time:  35.5972
+Check: CC6A
+== OpenMP with 6 threads
+n:     1000
+p:     0.05
+Time:  36.8642
+Check: CC6A
+== OpenMP with 5 threads
+n:     1000
+p:     0.05
+Time:  41.3639
+Check: CC6A
+== OpenMP with 1 threads
+n:     1000
+p:     0.05
+Time:  97.9336
+Check: CC6A

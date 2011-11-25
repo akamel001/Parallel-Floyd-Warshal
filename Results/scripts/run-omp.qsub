@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+#$ -cwd
+#$ -j y
+#$ -S /bin/bash
+#
+
+export OMP_NUM_THREADS=$1
+
+./path-omp.x -n $2 >> timing_omp_$2
