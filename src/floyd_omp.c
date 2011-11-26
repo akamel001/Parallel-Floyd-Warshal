@@ -130,7 +130,7 @@ int main (int argc, char** argv)
 	 printf("== OpenMP with %d threads\n", omp_get_max_threads());
 	 printf("n:     %d\n", n);
 	 printf("p:     %g\n", p);
-	 printf("Time:  %g us\n", (end-start)*1000000.);
+	 printf("Time:  %g sec\n", (end-start));
 	 printf("Check: %X\n", fletcher16(l, n*n));
 
 	 //output
