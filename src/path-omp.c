@@ -57,10 +57,8 @@ void shortest_paths(int n, int* restrict l)
     // Repeated squaring until nothing changes
     int* restrict lnew = (int*) calloc(n*n, sizeof(int));
     memcpy(lnew, l, n*n * sizeof(int));
-    int itr = 0;
 	 for (int done = 0; !done; ) {
         done = square(n, l, lnew);
-       printf("%d\n", itr++);
 		 memcpy(l, lnew, n*n * sizeof(int));
     }
     free(lnew);
