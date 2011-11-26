@@ -7,6 +7,7 @@
 #include "mt19937p.h"
 #include <time.h>
 #include <mpi.h>
+#include <assert.h>
 
 char name[MPI_MAX_PROCESSOR_NAME];
 
@@ -174,8 +175,10 @@ int main (int argc, char** argv)
 	double p = .05;
 	const char* ifname = NULL;
 	const char* ofname = NULL;
-	int size, rank, len;
-
+	int processors, my_rank, size;
+    int* my_partition;
+    int i, j, k, partition_size;
+    int* kth_row;
 	//args
 	extern char* optarg;
 	const char* optstring = "hn:d:p:o:i:";
@@ -193,33 +196,100 @@ int main (int argc, char** argv)
 	}
 
 	//make graph + output
-	int* l = gen_graph(n,p);
+	int* graph = gen_graph(n,p);
 	if(ifname)
-		write_matrix(ifname, n, l);
+		write_matrix(ifname, n, graph);
+    size = n;
+    
+    MPI_Init(&argc, &argv);
+    MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &processors);
+    
 
-	MPI_Init(&argc, &argv);
-	MPI_Comm_size(MPI_COMM_WORLD, &size);
-	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-	MPI_Get_processor_name(name, &len);//TODO is this needed?
+    /*----------
+     // Broadcast data size.
+     //--------*/
+    MPI_Bcast(&size, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    
+    /*----------
+     // Determine data partitions.
+     //--------*/
+    partition_size = size / processors;
+    if (size % processors)
+        partition_size++;
+    
+    my_partition = (int*) malloc(size * partition_size * sizeof(int));
+    kth_row      = (int*) malloc(size * 1 * sizeof(int));
+    
+    assert(my_partition != NULL);
+    
+    /*----------
+     // Distribute the data.
+     //--------*/
+    MPI_Scatter(graph, partition_size * size, MPI_INT, my_partition,
+                partition_size * size, MPI_INT, 0, MPI_COMM_WORLD);
+    
+    /* If processors does not divide evenly into size, the Scatter
+     will send random memory beyond the end of graph, but that data
+     should not actually get used, so it probably won't crash. */
+    
+    /*----------
+     // Do the calculation.
+     //--------*/
+    for (k = 0; k < size; k++) {
+        
+        /*----------
+         // Broadcast kth row.
+         //--------*/
+        if (my_rank == (k / partition_size))
+            for (i = 0; i < size; i++)
+                kth_row[i] = my_partition[(k%partition_size)*size+i];
+        MPI_Bcast(kth_row, size, MPI_INT, (k / partition_size), MPI_COMM_WORLD);
+        
+        /*----------
+         // Update my rows.
+         //--------*/
+        for (i = 0; (i < partition_size) && (i < size); i++) {
+            if (my_partition[i*size+k] < 1)
+                continue;
+            for (j = 0; j < size; j++) {
+                if (kth_row[j] < 1)
+                    continue;
+                if (my_partition[i*size+j] < 0)
+                    my_partition[i*size+j] = my_partition[i*size+k] + kth_row[j];
+                else
+                    my_partition[i*size+j] = min(my_partition[i*size+j],
+                                                 my_partition[i*size+k] + kth_row[j]);
+            }
+        }
+    }
+    
+    /*----------
+     // Collect the data.
+     //--------*/
+    MPI_Gather(my_partition, partition_size * size, MPI_INT, graph,
+               partition_size * size, MPI_INT, 0, MPI_COMM_WORLD);
 
-	if(rank == 0){
-		clock_t start = clock();
-		master(size, n, l);
-		clock_t end = clock();
-		
-		printf("== MPI Floyd-Warshall %d processors\n", size);
+//	MPI_Get_processor_name(name, &len);//TODO is this needed?
+//
+	if(my_rank == 0){
+//		clock_t start = clock();
+//		master(size, n, l);
+//		clock_t end = clock();
+//		
+		printf("== MPI Floyd-Warshall %d processors\n", processors);
 		printf("n:     %d\n", n);
 		printf("p:     %g\n", p);
-		printf("Time:  %g us\n", (double) (end-start)/1000);
-		printf("Check: %X\n", fletcher16(l, n*n));
+		//printf("Time:  %g us\n", (double) (end-start)/1000);
+		printf("Check: %X\n", fletcher16(graph, n*n));
 	
 		//output
 		if(ofname)
-			write_matrix(ofname,n,l);
+			write_matrix(ofname,n,graph);
 	} 
-	else {
-		slave(rank, size);
-	}
+//	else {
+//		slave(rank, size);
+//	}
 
 	//infinitize(n,l);
 	//floyd(l,n); 
@@ -227,7 +297,7 @@ int main (int argc, char** argv)
 
 
 	MPI_Finalize();
-	free(l);
+	free(graph);
 	return 0;
 }
 
