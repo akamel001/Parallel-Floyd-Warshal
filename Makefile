@@ -19,11 +19,15 @@ INCLUDES=-I ./$(INCPATH)
 
 #==========
 exe: $(BINPATH)/path-omp \
+	$(BINPATH)/floyd_omp \
 	  $(BINPATH)/path-mpi \
 	  $(BINPATH)/path-mpi-complex \
 	  $(BINPATH)/floyd_serial 
 
 $(BINPATH)/path-omp: $(OBJPATH)/path-omp.o $(OBJPATH)/mt19937p.o
+	$(CC) -fopenmp $(CFLAGS) -o $@ $^
+ 
+$(BINPATH)/floyd_omp: $(OBJPATH)/floyd_omp.o $(OBJPATH)/mt19937p.o
 	$(CC) -fopenmp $(CFLAGS) -o $@ $^ 
 
 $(BINPATH)/floyd_serial: $(OBJPATH)/floyd_serial.o $(OBJPATH)/mt19937p.o
@@ -36,6 +40,9 @@ $(BINPATH)/path-mpi-complex: $(OBJPATH)/path-mpi-complex.o $(OBJPATH)/mt19937p.o
 	$(MPICC) $(CFLAGS) -o $@ $^ 
 
 $(OBJPATH)/path-omp.o: $(SRCPATH)/path-omp.c 
+	$(CC) -c -fopenmp $(CFLAGS) $(INCLUDES) $< -o $@
+
+$(OBJPATH)/floyd_omp.o: $(SRCPATH)/floyd_omp.c 
 	$(CC) -c -fopenmp $(CFLAGS) $(INCLUDES) $< -o $@
 
 $(OBJPATH)/floyd_serial.o: $(SRCPATH)/floyd_serial.c 
