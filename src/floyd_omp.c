@@ -32,19 +32,15 @@ int* gen_graph(int n, double p)
 
 void floyd(int *l, int n){
 
-	int k,i,j;
-	int ij,ik,kj;
-
-	// Maximum path length is N so we iterate N times
-	for(k=0; k<n; k++){
-		#pragma omp parallel shared(l,k) private(i,j,ik,ij,kj)
+	for(int k=0; k<n; k++){
+		#pragma omp parallel shared(l,k)
 		{
 			#pragma omp for schedule(static) 
-			for(i=0; i<n; i++){
-				ik = i * n + k;
-				for (j=0; j<n; j++){
-					ij = i * n + j;
-					kj = k * n + j;
+			for(int i=0; i<n; i++){
+				int ik = i * n + k;
+				for (int j=0; j<n; j++){
+					int ij = i * n + j;
+					int kj = k * n + j;
 					if(i == j ) l[ij] = 0;
 					if(l[ik]+l[kj]< l[ij])
 						l[ij] = l[ik]+l[kj];
@@ -134,7 +130,7 @@ int main (int argc, char** argv)
 	 printf("== OpenMP with %d threads\n", omp_get_max_threads());
 	 printf("n:     %d\n", n);
 	 printf("p:     %g\n", p);
-	 printf("Time:  %g\n", end-start);
+	 printf("Time:  %g us\n", (end-start)*1000000.);
 	 printf("Check: %X\n", fletcher16(l, n*n));
 
 	 //output
