@@ -6,6 +6,7 @@
 #include "mpi.h"
 #include "mt19937p.h"
 
+
 /*
  * Description: Algorithm uses repeated squaring process to solve the matrix
  */

@@ -4,8 +4,11 @@
 #include <math.h>
 #include <unistd.h>
 #include <omp.h>
+#include <time.h>
 #include "mt19937p.h"
 
+#define MIN_RUNS 4
+#define MIN_SECS 0.25
 
 /*
  * Description: Algorithm uses repeated squaring process to solve the matrix
@@ -104,6 +107,31 @@ void write_matrix(const char* fname, int n, int* a)
     fclose(fp);
 }
 
+double time_path(const int n, const int *l){
+	
+	clock_t start, finish;
+	double mflops, mflop_s;
+	double secs = -1.0;
+	int num_iterations = MIN_RUNS;
+	int i;
+    
+	while(secs < MIN_SECS){
+		int *lcpy = (int*) calloc(n*n, sizeof(int));
+		memcpy(lcpy,l, n*n*sizeof(int));
+		start = clock();
+		for(i = 0; i < num_iterations; ++i)
+			shortest_paths(n, lcpy);
+		finish = clock();
+		secs = (finish-start)/(double)(CLOCKS_PER_SEC);
+		mflops = 2.0 * num_iterations * n * n * n / 1.0e6; 
+		mflop_s = mflops/secs;
+		num_iterations *= 2;
+		free(lcpy);
+	}
+	return mflop_s;
+}
+
+
 const char* usage =
     "path.x -- Parallel all-pairs shortest path on a random graph\n"
     "Flags:\n"
@@ -118,20 +146,23 @@ int main(int argc, char** argv)
     double p = 0.05;           // Edge probability
     const char* ifname = NULL; // Adjacency matrix file name
     const char* ofname = NULL; // Distance matrix file name
-
-    // Option processing
-    extern char* optarg;
-    const char* optstring = "hn:d:p:o:i:";
-    int c;
+    double mflop_s;
+    int FLOPS = 0;
+    
+    //args
+	extern char* optarg;
+	const char* optstring = "hn:d:p:o:i:f:";
+	int c;
     while ((c = getopt(argc, argv, optstring)) != -1) {
         switch (c) {
-        case 'h':
-            fprintf(stderr, "%s", usage);
-            return -1;
-        case 'n': n = atoi(optarg); break;
-        case 'p': p = atof(optarg); break;
-        case 'o': ofname = optarg;  break;
-        case 'i': ifname = optarg;  break;
+            case 'h':
+                fprintf(stderr, "%s", usage);
+                return -1;
+            case 'n': n = atoi(optarg);			break;
+            case 'p': p = atof(optarg); 		break;
+            case 'o': ofname = optarg;  		break;
+            case 'f': FLOPS = atoi(optarg); 	break;
+            case 'i': ifname = optarg; 		 	break;
         }
     }
 
@@ -149,6 +180,10 @@ int main(int argc, char** argv)
     printf("n:     %d\n", n);
     printf("p:     %g\n", p);
     printf("Time:  %g\n", t1-t0);
+    if(FLOPS){
+	 	mflop_s = time_path(n, l);
+	 	printf("mflop/s: %lg\n", mflop_s);
+    }
     printf("Check: %X\n", fletcher16(l, n*n));
 
     // Generate output file

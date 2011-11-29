@@ -117,10 +117,9 @@ int main (int argc, char** argv)
 {
 	int n 	= 200;
 	double p = .05;
-	double mflop_s;
 	const char* ifname = NULL;
 	const char* ofname = NULL;
-	
+    double mflop_s;
 	int FLOPS = 0;
 
 	//args
