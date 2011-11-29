@@ -6,7 +6,9 @@
 #include "mt19937p.h"
 #include <time.h>
 
-#define INF 999999
+#define INF 9999999
+#define MIN_RUNS 4
+#define MIN_SECS 0.25
 
 const char* usage =
     "path.x -- Parallel all-pairs shortest path on a random graph\n"
@@ -31,34 +33,26 @@ int* gen_graph(int n, double p)
 
 void floyd(int *l, int n){
 
-	int k,i,j;
-	int ij,ik,kj;
-
-	// Maximum path length is N so we iterate N times
-	for(k=0; k<n; k++){
-		for(i=0; i<n; i++){
-			ik = i * n + k;
-			for (j=0; j<n; j++){
-				ij = i * n + j;
-				kj = k * n + j;
-				if(i==j){
-					l[ij] = 0;
-				}else{
-					//test and set to infinity 
-					//infinity redefined since it was defined in math library
-					if(l[ij] == 0) l[ij] = INF;
-					
-					// If our data is smaller, replace it 
-					// and set the output to be the current path length
-					if(l[ik]+l[kj]< l[ij]){
+	for(int k=0; k<n; k++){
+			for(int i=0; i<n; i++){
+				int ik = i * n + k;
+				for (int j=0; j<n; j++){
+					int ij = i * n + j;
+					int kj = k * n + j;
+					if(i == j ) l[ij] = 0;
+					if(l[ik]+l[kj]< l[ij])
 						l[ij] = l[ik]+l[kj];
-					}
 				}
-			}
 		}
 	}
 }
 
+static inline void infinitize(int n, int* l)
+{
+    for (int i = 0; i < n*n; ++i)
+        if (l[i] == 0)
+            l[i] = INF;
+}
 
 static inline void deinfinitize(int n, int* l)
 {
@@ -95,26 +89,54 @@ void write_matrix(const char* fname, int n, int* a)
     fclose(fp);
 }
 
+double time_floyd(const int n, const int *l){
+	
+	clock_t start, finish;
+	double mflops, mflop_s;
+	double secs = -1.0;
+	int num_iterations = MIN_RUNS;
+	int i;
+
+	while(secs < MIN_SECS){
+		int *lcpy = (int*) calloc(n*n, sizeof(int));
+		memcpy(lcpy,l, n*n*sizeof(int));
+		start = clock();
+		for(i = 0; i < num_iterations; ++i)
+			floyd(lcpy,n);
+		finish = clock();
+		secs = (finish-start)/(double)(CLOCKS_PER_SEC);
+		mflops = 2.0 * num_iterations * n * n * n / 1.0e6; 
+		mflop_s = mflops/secs;
+		num_iterations *= 2;
+		free(lcpy);
+	}
+	return mflop_s;
+}
+
 int main (int argc, char** argv)
 {
 	int n 	= 200;
 	double p = .05;
+	double mflop_s;
 	const char* ifname = NULL;
 	const char* ofname = NULL;
+	
+	int FLOPS = 0;
 
 	//args
 	extern char* optarg;
-	const char* optstring = "hn:d:p:o:i:";
+	const char* optstring = "hn:d:p:o:i:f:";
 	int c;
     while ((c = getopt(argc, argv, optstring)) != -1) {
         switch (c) {
         case 'h':
             fprintf(stderr, "%s", usage);
             return -1;
-        case 'n': n = atoi(optarg); break;
-        case 'p': p = atof(optarg); break;
-        case 'o': ofname = optarg;  break;
-        case 'i': ifname = optarg;  break;
+        case 'n': n = atoi(optarg);			break;
+        case 'p': p = atof(optarg); 		break;
+        case 'o': ofname = optarg;  		break;
+        case 'f': FLOPS = atoi(optarg); 	break;
+        case 'i': ifname = optarg; 		 	break;
         }
     }
 	
@@ -123,28 +145,27 @@ int main (int argc, char** argv)
 	 if(ifname)
 		 write_matrix(ifname, n, l);
 
+	 
 	 clock_t start = clock();
-	 //infinitize(n,l);
+	 infinitize(n,l);
 	 floyd(l,n); 
 	 deinfinitize(n,l);
 	 clock_t end = clock();
-	
-    printf("== Serial FloydWarshall\n");
-    printf("n:     %d\n", n);
-    printf("p:     %g\n", p);
-    printf("Time:  %g us\n", ((double)(end-start))/((double) CLOCKS_PER_SEC)*1000000.0);
-    printf("Check: %X\n", fletcher16(l, n*n));
-	
-	//output
-	if(ofname)
-		write_matrix(ofname,n,l);
+	 
+	 printf("== Serial Floyd Warshall ==\n");
+	 printf("n:     %d\n", n);
+	 printf("p:     %g\n", p);
+	 printf("Time:  %g sec\n", (end-start)/(double)(CLOCKS_PER_SEC));
+    if(FLOPS){
+	 	mflop_s = time_floyd(n, l);
+	 	printf("mflop/s: %lg\n", mflop_s);
+	 }
+	 printf("Check: %X\n", fletcher16(l, n*n));
 
-	free(l);
-	return 0;
+	 //output
+	 if(ofname)
+		 write_matrix(ofname,n,l);
+
+	 free(l);
+	 return 0;
 }
-
-
-
-
-
-

@@ -63,10 +63,8 @@ $(OBJPATH)/%.o: $(SRCPATH)/%.c
 # === Cleanup and tarball
 
 clean:
-	rm -f $(OBJPATH)/*.o
-
-realclean: clean
-	rm -f $(BINPATH)/* 
-
-tar:
-	(tar -cvzf final.tgz ../final/)
+	@echo "Removing all object files."
+	@rm -f $(OBJPATH)/*.o
+	
+	@echo "Removing all executables."
+	@rm -f $(BINPATH)/* 
