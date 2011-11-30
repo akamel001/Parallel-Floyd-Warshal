@@ -1,10 +1,10 @@
 CC=gcc
 MPICC=mpicc
 CFLAGS=-Wall -falign-functions -falign-loops -funroll-all-loops -std=gnu99 -O3
-DEBUG=no 
+DEBUG=yes
 
 ifeq ($(DEBUG),yes)
-	CFLAGS=CFLAGS + -g
+	CFLAGS= -g -Wall -falign-functions -falign-loops -funroll-all-loops -std=gnu99 -O3
 endif
 
 INCPATH=inc
