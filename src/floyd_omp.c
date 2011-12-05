@@ -33,7 +33,6 @@ int* gen_graph(int n, double p)
 void floyd(int *l, int n){
 
 	for(int k=0; k<n; k++){
-		if(k == n/2) return;
 		#pragma omp parallel shared(l,k)
 		{
 			#pragma omp for schedule(static) 

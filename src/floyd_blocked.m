@@ -1,6 +1,7 @@
 function D = floyd3(A)
 
   %D = floydinit(A);
+  D = A;
   n = length(A);
   b = 5;
 

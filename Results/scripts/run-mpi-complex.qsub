@@ -7,4 +7,4 @@
 #
 NSLOTS=$1
 
-/opt/openmpi/bin/mpirun -np $NSLOTS ./path-mpi-complex.x -n $2 >> timing_mpi_complex_$2
+/opt/openmpi/bin/mpirun -np $NSLOTS ../../bin/path-mpi-complex -n $2 >> timing_mpi_complex

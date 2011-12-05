@@ -64,7 +64,7 @@ $(OBJPATH)/%.o: $(SRCPATH)/%.c
 
 clean:
 	@echo "Removing all object files."
-	@rm -f $(OBJPATH)/*.o
+	@rm -rf $(OBJPATH)/*.o
 	
 	@echo "Removing all executables."
-	@rm -f $(BINPATH)/* 
+	@rm -rf $(BINPATH)/* 

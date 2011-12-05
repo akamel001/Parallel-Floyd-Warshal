@@ -7,4 +7,4 @@
 
 export OMP_NUM_THREADS=$1
 
-../../bin/path-omp -n $2 >> timing_path_omp
+../../bin/floyd_omp -n $2 >> timing_floyd_omp
